@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
 {
@@ -17,7 +21,9 @@ public class Player : MonoBehaviour
     Vector2 input;
     Vector2 velocity;
 
-   
+    int score;
+
+    public TextMeshProUGUI scoreText;
 
     private void Awake()
     {
@@ -52,5 +58,16 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       
+        if (collision.CompareTag("Item"))
+        {
+          score += collision.GetComponent<ItemObject>().GetPoint();
+            Destroy(collision.gameObject);
+            scoreText.text = score.ToString();
+        }
     }
 }
